@@ -1,22 +1,12 @@
-function [ sucess_string ] = sendovertcpip( data, ipadr, ip_port)
+function [ sucess_string ] = sendovertcpip( data, ipadr, ip_port, u1)
 
-t = tcpip (ipadr, str2num (ip_port) , 'NetworkRole', 'Server' );
+address = java.net.InetAddress.getLocalHost; 
+IPaddress = char(address.getHostAddress);
 
-try
-    sucess = true;
-    fopen(t);
-catch
-  sucess = false;     
-end
+t =  u1;
 
-if (sucess == true )
     fprintf (t, data);
-    sucess_string = 'Packent sucessfully sent';
-else
-   sucess_string = 'Failed to send packet; Check Network Connections';   
-end
-
-
+sucess_string = [data '-->' IPaddress ];
 
 end
 

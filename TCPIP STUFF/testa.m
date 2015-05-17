@@ -1,23 +1,21 @@
-function [ sucess_string ] = testa( input_args )
+function [data] = testa( input_args )
 
-ipadr = '192.168.0.105';
+ipadr2listen2 = '192.168.0.106';
 ip_port = 80;
-data = 'jhgbhgbjhgbjhgvbh';
 
-t = tcpip (ipadr, ip_port, 'NetworkRole', 'Server' );
+tout = 1;
+
+t = tcpip (ipadr2listen2, ip_port, 'NetworkRole', 'Client', 'Timeout', 10 );
 
 try
     sucess = true;
     fopen(t);
 catch
-  sucess = false;     
+  sucess = false 
 end
 
 if (sucess == true )
-    fprintf (t, data);
-    sucess_string = 'Packent sucessfully sent';
-else
-   sucess_string = 'Failed to send packet; Check Network Connections';   
+    data = fscanf (t);
 end
    
 end

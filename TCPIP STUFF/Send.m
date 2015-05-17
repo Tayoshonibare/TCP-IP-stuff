@@ -22,7 +22,7 @@ function varargout = Send(varargin)
 
 % Edit the above text to modify the response to help Send
 
-% Last Modified by GUIDE v2.5 16-May-2015 22:29:20
+% Last Modified by GUIDE v2.5 17-May-2015 12:18:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -46,139 +46,124 @@ end
 
 % --- Executes just before Send is made visible.
 function Send_OpeningFcn(hObject, eventdata, handles, varargin)
-% This function has no output args, see OutputFcn.
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to Send (see VARARGIN)
 
-% Choose default command line output for Send
 handles.output = hObject;
 axes (handles.LOGO);
 imshow ('ssdc_logo.jpg');
+instrreset;
+global u1;
+
+ipadr = get (handles.Lipadr, 'String');
+ipport = str2double (get (handles.ipport, 'String')) ;
+ 
+u1 = udp(ipadr, 'RemotePort', ipport, 'LocalPort', ipport);
+fopen(u1);
+
 
 % Update handles structure
 guidata(hObject, handles);
 
-% UIWAIT makes Send wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
+
+
 
 
 % --- Outputs from this function are returned to the command line.
 function varargout = Send_OutputFcn(hObject, eventdata, handles) 
-% varargout  cell array for returning output args (see VARARGOUT);
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Get default command line output from handles structure
 varargout{1} = handles.output;
-
-
-
 function sendtext_Callback(hObject, eventdata, handles)
-% hObject    handle to sendtext (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of sendtext as text
-%        str2double(get(hObject,'String')) returns contents of sendtext as a double
-
-
 % --- Executes during object creation, after setting all properties.
 function sendtext_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to sendtext (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
 % --- Executes on button press in send.
 function send_Callback(hObject, eventdata, handles)
+global u1;
 data = get (handles.sendtext, 'String');
 ip_adr = get (handles.ipadr, 'String');
 ip_port = get (handles.ipport, 'String');
 init_str = get (handles.cmd, 'String');
 init_str(end+1) = cellstr ('Busy....');
  set (handles.cmd, 'String', init_str);
- pause (1);
- init_str(end+1) = cellstr (sendovertcpip (data, ip_adr, ip_port));
+ pause (0.1);
+ init_str(end+1) = cellstr (sendovertcpip (data, ip_adr, ip_port, u1));
   set (handles.cmd, 'String', init_str);
-  pause (0.5);
-% hObject    handle to send (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-
+  pause (0.2);
 function cmd_Callback(hObject, eventdata, handles)
-% hObject    handle to cmd (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of cmd as text
-%        str2double(get(hObject,'String')) returns contents of cmd as a double
-
-
 % --- Executes during object creation, after setting all properties.
 function cmd_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to cmd (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
 
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-
 function ipadr_Callback(hObject, eventdata, handles)
-% hObject    handle to ipadr (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of ipadr as text
-%        str2double(get(hObject,'String')) returns contents of ipadr as a double
-
-
 % --- Executes during object creation, after setting all properties.
 function ipadr_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to ipadr (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
 
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-
 function ipport_Callback(hObject, eventdata, handles)
-% hObject    handle to ipport (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of ipport as text
-%        str2double(get(hObject,'String')) returns contents of ipport as a double
-
-
-% --- Executes during object creation, after setting all properties.
 function ipport_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to ipport (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
 
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+function edit5_Callback(hObject, eventdata, handles)
+function edit5_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+function Lipadr_Callback(hObject, eventdata, handles)
+% --- Executes during object creation, after setting all properties.
+function Lipadr_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+% --- Executes on button press in Listen.
+function Listen_Callback(hObject, eventdata, handles)
+
+
+
+   
+
+
+% --- Executes on button press in reset.
+function reset_Callback(hObject, eventdata, handles)
+instrreset;
+global u1;
+
+ipadr = get (handles.Lipadr, 'String');
+ipport = str2double (get (handles.ipport, 'String')) ;
+ 
+u1 = udp(ipadr, 'RemotePort', ipport, 'LocalPort', ipport);
+fopen(u1);
+
+
+
+
+
+
+
+% --- Executes on button press in listen.
+function listen_Callback(hObject, eventdata, handles)
+run = timer('TimerFcn',{@UDP_checker, handles}, 'ExecutionMode','fixedRate', 'Period', 1);
+if (get (handles.listen, 'Value') == 1)
+    start (run); 
+else
+    stop (run);
+    delete (timerfind);
+end
+
+function UDP_checker ( hObject, eventdata, handles)   
+global u1;
+ if (u1.BytesAvailable > 0)
+ data = fscanf (u1);
+ init_str = get (handles.cmd, 'String');
+ init_str(end+1) = cellstr (data);
+ set (handles.cmd, 'String', init_str);
+ else
+     return  
+ end
+
+
