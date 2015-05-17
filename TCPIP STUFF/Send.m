@@ -157,8 +157,10 @@ end
 
 function UDP_checker ( hObject, eventdata, handles)   
 global u1;
+bytes_analiable =  u1.BytesAvailable
  if (u1.BytesAvailable > 0)
  data = fscanf (u1);
+ 
  init_str = get (handles.cmd, 'String');
  init_str(end+1) = cellstr (data);
  set (handles.cmd, 'String', init_str);
