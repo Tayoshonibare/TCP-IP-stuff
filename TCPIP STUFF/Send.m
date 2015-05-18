@@ -91,7 +91,6 @@ ip_port = get (handles.ipport, 'String');   %Destination Port
 init_str = get (handles.cmd, 'String');
 init_str(end+1) = cellstr (sendovertcpip (data, u1));
 set (handles.cmd, 'String', init_str);
- pause (0.1);
 function cmd_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function cmd_CreateFcn(hObject, eventdata, handles)
