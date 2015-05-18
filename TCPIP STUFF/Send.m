@@ -142,7 +142,7 @@ start (run);
 
 function UDP_checker ( hObject, eventdata, handles)
 global u1; global IPaddress; global prev_dump;
-bava = u1. BytesAvailable
+% bava = u1. BytesAvailable;  % FOR DEBUGING
 
 if (u1.BytesAvailable > 0 )
     data_inport.text = fscanf (u1);
@@ -155,9 +155,7 @@ if (u1.BytesAvailable > 0 )
      init_str(end+1) = cellstr (data_inport.text);
      set (handles.cmd, 'String', init_str);
     else
-        data = data_inport.text (1: data_inport.size - (numel(IPaddress)));
-        prev_dump = data;
-%         if (~strcmp (data, prev_dump))
+        data = data_inport.text (1: data_inport.size - (numel(IPaddress) + 1 + numel('**-From->')  ));
         [~, ~] = sendovertcpip( data, u1); 
 %         end
     end
