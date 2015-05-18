@@ -62,7 +62,8 @@ fopen(u1);
 
 %Start UDB Sreciever
 global run;
-run = timer('TimerFcn', {@UDP_checker, handles}, 'ExecutionMode','fixedRate', 'Period', 1);
+run = timer('TimerFcn', {@UDP_checker, handles}, 'ExecutionMode','fixedRate', 'Period', 1,...
+            'ErrorFcn', {@restatr_listener});
 start (run); 
 
 %Setting IP ADRESS FOR FUTURE USE 
@@ -91,7 +92,6 @@ ip_port = get (handles.ipport, 'String');   %Destination Port
 init_str = get (handles.cmd, 'String');
 init_str(end+1) = cellstr (sendovertcpip (data, u1));
 set (handles.cmd, 'String', init_str);
- pause (0.1);
 function cmd_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function cmd_CreateFcn(hObject, eventdata, handles)
@@ -137,14 +137,13 @@ fopen(u1);
 
 global run;
 stop (run);
-pause (1);
 start (run); 
 
 function UDP_checker ( hObject, eventdata, handles)
 global u1; global IPaddress; global prev_dump;
-bava = u1. BytesAvailable
+% bava = u1. BytesAvailable;  % FOR DEBUGING
 
-if (u1.BytesAvailable > 0)
+if (u1.BytesAvailable > 0 )
     data_inport.text = fscanf (u1);
     data_inport.size = numel (data_inport.text);
     sendingip = data_inport.text( (data_inport.size - (numel(IPaddress)) ) :data_inport.size-1 );
@@ -155,12 +154,9 @@ if (u1.BytesAvailable > 0)
      init_str(end+1) = cellstr (data_inport.text);
      set (handles.cmd, 'String', init_str);
     else
-        data = data_inport.text (1: data_inport.size - (numel(IPaddress)));
-%         prev_dump = data;
-%         [prev_dump, ~] = sendovertcpip( data, u1); 
-        if (~strcmp (data, prev_dump))
+        data = data_inport.text (1: data_inport.size - (numel(IPaddress) + 1 + numel('**-From->')  ));
         [~, ~] = sendovertcpip( data, u1); 
-        end
+%         end
     end
 else
     return

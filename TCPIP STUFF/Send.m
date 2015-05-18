@@ -22,7 +22,7 @@ function varargout = Send(varargin)
 
 % Edit the above text to modify the response to help Send
 
-% Last Modified by GUIDE v2.5 18-May-2015 13:15:01
+% Last Modified by GUIDE v2.5 18-May-2015 15:30:58
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -62,7 +62,8 @@ fopen(u1);
 
 %Start UDB Sreciever
 global run;
-run = timer('TimerFcn', {@UDP_checker, handles}, 'ExecutionMode','fixedRate', 'Period', 1);
+run = timer('TimerFcn', {@UDP_checker, handles}, 'ExecutionMode','fixedRate', 'Period', 1,...
+            'ErrorFcn', {@restatr_listener});
 start (run); 
 
 %Setting IP ADRESS FOR FUTURE USE 
@@ -72,7 +73,10 @@ IPaddress = char(address.getHostAddress);
 
 % Update handles structure
 guidata(hObject, handles);
-
+function restatr_listener
+global run;
+stop (run);
+start (run);
 % --- Outputs from this function are returned to the command line.
 function varargout = Send_OutputFcn(hObject, eventdata, handles) 
 varargout{1} = handles.output;
@@ -172,4 +176,3 @@ function figure1_DeleteFcn(hObject, eventdata, handles)
 stop (timerfind);
 pause (0.5);
 delete (timerfind);
-
