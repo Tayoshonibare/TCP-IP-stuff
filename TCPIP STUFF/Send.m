@@ -137,7 +137,6 @@ fopen(u1);
 
 global run;
 stop (run);
-pause (1);
 start (run); 
 
 function UDP_checker ( hObject, eventdata, handles)
