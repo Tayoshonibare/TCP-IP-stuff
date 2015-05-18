@@ -22,7 +22,7 @@ function varargout = Send(varargin)
 
 % Edit the above text to modify the response to help Send
 
-% Last Modified by GUIDE v2.5 17-May-2015 12:18:55
+% Last Modified by GUIDE v2.5 18-May-2015 12:38:54
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -167,5 +167,3 @@ bytes_analiable =  u1.BytesAvailable
  else
      return  
  end
-
-
