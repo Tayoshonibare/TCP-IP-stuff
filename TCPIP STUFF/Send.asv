@@ -144,7 +144,7 @@ function UDP_checker ( hObject, eventdata, handles)
 global u1; global IPaddress; global prev_dump;
 bava = u1. BytesAvailable
 
-if (u1.BytesAvailable > 0 )
+if (u1.BytesAvailable > 0)
     data_inport.text = fscanf (u1);
     data_inport.size = numel (data_inport.text);
     sendingip = data_inport.text( (data_inport.size - (numel(IPaddress)) ) :data_inport.size-1 );
@@ -156,10 +156,11 @@ if (u1.BytesAvailable > 0 )
      set (handles.cmd, 'String', init_str);
     else
         data = data_inport.text (1: data_inport.size - (numel(IPaddress)));
-        prev_dump = data;
-%         if (~strcmp (data, prev_dump))
+%         prev_dump = data;
+%         [prev_dump, ~] = sendovertcpip( data, u1); 
+        if (~strcmp (data, prev_dump))
         [~, ~] = sendovertcpip( data, u1); 
-%         end
+        end
     end
 else
     return
